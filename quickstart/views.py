@@ -59,7 +59,7 @@ def convertGrayScale(request):
                 'error_file': "Error : File size Exceeded 25 MB",
                 'uploaded_file_url': ""
             })
-        if email == None:
+        if email == None or email == "":
             return render(request, 'core/convertGrayScale.html', {
                 'error_file': "Error : Enter Email Id",
                 'uploaded_file_url': ""
@@ -129,18 +129,18 @@ def CompressVideo(request):
                 'uploaded_file_url': ""
             })
         if myfile.size > 23068672:
-            return render(request, 'core/convertGrayScale.html', {
+            return render(request, 'core/CompressVideo.html', {
                 'error_file': "Error : File size Exceeded 25 MB",
                 'uploaded_file_url': ""
             })
-        print(compVal.isnumeric(), int(compVal) >= 0, int(compVal) < 100)
-        if not compVal.isnumeric() or int(compVal) < 0 or int(compVal) >= 100:
+        # print(compVal.isnumeric(), int(compVal) >= 0, int(compVal) < 100)
+        if compVal == "" or not compVal.isnumeric() or int(compVal) < 0 or int(compVal) >= 100:
             return render(request, 'core/CompressVideo.html', {
-                'error_file': "Error : Compression value is not a number.",
+                'error_file': "Error : Enter a valid Compression value.",
                 'uploaded_file_url': ""
             })
-        if email == None:
-            return render(request, 'core/convertGrayScale.html', {
+        if email == None or email == "":
+            return render(request, 'core/CompressVideo.html', {
                 'error_file': "Error : Enter Email Id",
                 'uploaded_file_url': ""
             })
@@ -174,7 +174,7 @@ def CompressVideo(request):
                 print("sent")
                 attach_file_convert.close()
             except:
-                return render(request, 'core/convertGrayScale.html', {
+                return render(request, 'core/CompressVideo.html', {
                     'error_file': "Error : Email Not Sent",
                     'uploaded_file_url': output_file
                 })
