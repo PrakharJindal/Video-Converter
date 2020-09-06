@@ -12,6 +12,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
+import re
+
+regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+
 
 smtp_server = "smtp.gmail.com"
 port = 587  # For starttls
@@ -59,9 +63,9 @@ def convertGrayScale(request):
                 'error_file': "Error : File size Exceeded 25 MB",
                 'uploaded_file_url': ""
             })
-        if email == None or email == "":
+        if email == None or email == "" or not re.search(regex, email):
             return render(request, 'core/convertGrayScale.html', {
-                'error_file': "Error : Enter Email Id",
+                'error_file': "Error : Enter valid Email Id",
                 'uploaded_file_url': ""
             })
         try:
@@ -139,7 +143,7 @@ def CompressVideo(request):
                 'error_file': "Error : Enter a valid Compression value.",
                 'uploaded_file_url': ""
             })
-        if email == None or email == "":
+        if email == None or email == "" or not re.search(regex, email):
             return render(request, 'core/CompressVideo.html', {
                 'error_file': "Error : Enter Email Id",
                 'uploaded_file_url': ""
