@@ -26,7 +26,7 @@ SECRET_KEY = '1oiur)q=1wo8!d*h5q1o!5j(ydqrcsyq6rkp8_w+07r+z&#d+0'
 DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.0.110', '192.168.43.253',
-                 '192.168.0.107', "192.168.137.1", "127.0.0.1"]
+                 '192.168.0.107', "192.168.137.1", "127.0.0.1" , "videoconvert.pythonanywhere.com"]
 
 # Application definition
 
