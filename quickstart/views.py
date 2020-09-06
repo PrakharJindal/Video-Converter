@@ -95,10 +95,10 @@ def convertGrayScale(request):
             #         'error_file': "Error : Email Not Sent",
             #         'uploaded_file_url': output_file
             #     })
-            # return render(request, 'core/convertGrayScale.html', {
-            #     'error_file': "Email Sent",
-            #     'uploaded_file_url': output_file
-            # })
+        return render(request, 'core/convertGrayScale.html', {
+            'error_file': "Email Sent",
+            'uploaded_file_url': output_file
+        })
         # except:
         #     return render(request, 'core/convertGrayScale.html', {
         #         'error_file': "Error : Some Error Occured",
