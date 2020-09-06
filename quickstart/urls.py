@@ -8,6 +8,6 @@ from django.conf import settings
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('simple', views.convertGrayScale, name='convertGrayScale'),
-    path('form', views.CompressVideo, name='CompressVideo'),
+    path('grayscale', views.convertGrayScale, name='convertGrayScale'),
+    path('compress', views.CompressVideo, name='CompressVideo'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)   # FOR IMAGES
