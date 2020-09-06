@@ -19,7 +19,7 @@ sender_email = "videoconverttest1845@gmail.com"
 password = "alskdjfhg1029384756"
 context = ssl.create_default_context()
 
-session = smtplib.SMTP('smtp.gmail.com', port) 
+session = smtplib.SMTP('smtp.gmail.com', port)  # use gmail with port
 session.ehlo()
 session.starttls()
 session.ehlo()
@@ -64,46 +64,46 @@ def convertGrayScale(request):
                 'error_file': "Error : Enter Email Id",
                 'uploaded_file_url': ""
             })
-        # try:
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-        output_file = convert(uploaded_file_url)
-        attach_file_name = output_file
-        # Open the file as binary mode
-        # try:
+        try:
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            output_file = convert(uploaded_file_url)
+            attach_file_name = output_file
+            # Open the file as binary mode
+            try:
 
-        attach_file = open(attach_file_name, 'rb')
-        payload = MIMEBase('application', 'octate-stream',
-                            name="".join(attach_file_name.split('/')[1:]))
-        payload.set_payload((attach_file).read())
-        encoders.encode_base64(payload)  # encode the attachment
-        # add payload header with filename
-        name = "".join(
-            "".join(attach_file_name.split('/')[1:]).split(".")[0])
-        payload.add_header('Content-Decomposition', 'attachment',
-                            filename="".join(attach_file_name.split('/')[1:]))
-        message.attach(payload)
-        text = message.as_string()
-        print("sending")
-        session.sendmail(sender_email, receiver_address, text)
-        # session.sendmail(message)
-        print("sent")
-        attach_file.close()
-        #     except:
-        #         return render(request, 'core/convertGrayScale.html', {
-        #             'error_file': "Error : Email Not Sent",
-        #             'uploaded_file_url': output_file
-        #         })
-        #     return render(request, 'core/convertGrayScale.html', {
-        #         'error_file': "Email Sent",
-        #         'uploaded_file_url': output_file
-        #     })
-        # except:
-        return render(request, 'core/convertGrayScale.html', {
-            'error_file': "Error : Some Error Occured",
-            'uploaded_file_url': ""
-        })
+                attach_file = open(attach_file_name, 'rb')
+                payload = MIMEBase('application', 'octate-stream',
+                                   name="".join(attach_file_name.split('/')[1:]))
+                payload.set_payload((attach_file).read())
+                encoders.encode_base64(payload)  # encode the attachment
+                # add payload header with filename
+                name = "".join(
+                    "".join(attach_file_name.split('/')[1:]).split(".")[0])
+                payload.add_header('Content-Decomposition', 'attachment',
+                                   filename="".join(attach_file_name.split('/')[1:]))
+                message.attach(payload)
+                text = message.as_string()
+                print("sending")
+                session.sendmail(sender_email, receiver_address, text)
+                # session.sendmail(message)
+                print("sent")
+                attach_file.close()
+            except:
+                return render(request, 'core/convertGrayScale.html', {
+                    'error_file': "Error : Email Not Sent",
+                    'uploaded_file_url': output_file
+                })
+            return render(request, 'core/convertGrayScale.html', {
+                'error_file': "Email Sent",
+                'uploaded_file_url': output_file
+            })
+        except:
+            return render(request, 'core/convertGrayScale.html', {
+                'error_file': "Error : Some Error Occured",
+                'uploaded_file_url': ""
+            })
     return render(request, 'core/convertGrayScale.html', {
         'uploaded_file_url': ""
     })
