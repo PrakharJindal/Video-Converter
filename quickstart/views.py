@@ -26,10 +26,8 @@ session.ehlo()
 session.login(sender_email, password)
 
 mail_content = '''Hello,
-This is a test mail.
-In this mail we are sending some attachments.
-The mail is sent using Python SMTP library.
-Thank You
+This is The converted Video.
+Thank You For using Our service.
 '''
 
 
@@ -43,7 +41,7 @@ def convertGrayScale(request):
 
         message = MIMEMultipart()
         message['From'] = sender_email
-        message['Subject'] = 'A test mail sent by Python. It has an attachment.'
+        message['Subject'] = 'Converted Video by Video-Converter.'
         message.attach(MIMEText(mail_content, 'plain'))
         myfile = request.FILES['myfile']
         print(myfile.size)
@@ -117,7 +115,7 @@ def CompressVideo(request):
 
         message = MIMEMultipart()
         message['From'] = sender_email
-        message['Subject'] = 'A test mail sent by Python. It has an attachment.'
+        message['Subject'] = 'Converted Video by Video-Converter.'
         message.attach(MIMEText(mail_content, 'plain'))
         myfile = request.FILES['myfile']
         email = request.POST.get("email")
