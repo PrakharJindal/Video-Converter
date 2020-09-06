@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Convert Video To Gray scale</title>
+    <link rel="stylesheet" type="text/css" href="media/view.css" media="all" />
+    <script type="text/javascript" src="media/view.js"></script>
+  </head>
+  <body id="main_body">
+    <img id="top" src="media/top.png" alt="" />
+    <div id="form_container">
+      <form class="appnitro" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <div class="form_description">
+          <h2>Compress Video</h2>
+        </div>
+        <ul>
+          <li id="li_1">
+            <label class="description" for="element_1">Upload a Video </label>
+            <p></p>
+            <div>
+              <input class="element file" type="file" name="myfile" />
+            </div>
+          </li>
+          <p></p>
+
+          <li id="li_2">
+            <label class="description" for="element_2"
+              >Compress to % level
+            </label>
+            <p></p>
+            <div>
+              <input
+                id="compVal"
+                name="compVal"
+                class="element text medium"
+                type="compVal"
+                maxlength="255"
+                value=""
+              />
+            </div>
+            <p></p>
+          </li>
+
+          <li id="li_2">
+            <label class="description" for="element_3">Email Id </label>
+            <p></p>
+            <div>
+              <input
+                id="email"
+                name="email"
+                class="element text medium"
+                type="email"
+                maxlength="255"
+                value=""
+              />
+            </div>
+            <p></p>
+          </li>
+
+          <li class="buttons">
+            <button type="submit">Compress and Mail</button>
+          </li>
+        </ul>
+        <li>
+          <p></p>
+          <p></p>
+          {% if error_file %}
+          <p>{{ error_file }}</p>
+          {% endif %}
+          <p></p>
+        </li>
+        <li>
+          <p></p>
+          {% if uploaded_file_url %}
+          <p>
+            Download converted file :
+            <a href="{{ uploaded_file_url }}" download
+              >{{ uploaded_file_url }}</a
+            >
+          </p>
+          {% endif %}
+          <p></p>
+          <label class="description" for="element_1"
+            ><a href="{% url 'home' %}"> Return to home</a>
+          </label>
+        </li>
+      </form>
+    </div>
+    <img id="bottom" src="media/bottom.png" alt="" />
+  </body>
+</html>
