@@ -14,16 +14,16 @@ def convert(videoName):
     outputName = ".".join(videoName.split(".")[:-1])
     outputFormat = videoName.split(".")[-1]
 
-    fourccList = {"mp4": "mp4v", "mpg": "MPGI",  "mkv": "mp4v",
-                  "webm": "vp80", "wmv": "divx", "mov": "3IVD"}
+    # fourccList = {"mp4": "mp4v", "mpg": "MPGI",  "mkv": "XVID",
+    #   "webm": "vp80", "wmv": "XVID", "mov": "3IVD", "avi": "XVID"}
 
-    if outputFormat.lower() not in fourccList:
-        print("in")
-        fourcc = cv2.VideoWriter_fourcc(*'divx')
-        outputFormat = "mp4"
-    else:
-        fourcc = cv2.VideoWriter_fourcc(
-            *'{}'.format(fourccList[outputFormat.lower()]))
+    fourcc = cv2.VideoWriter_fourcc(*'divx')
+    outputFormat = "mp4"
+    # if outputFormat.lower() not in fourccList:
+    #     print("in")
+    # else:
+    #     fourcc = cv2.VideoWriter_fourcc(
+    #         *'{}'.format(fourccList[outputFormat.lower()]))
 
     print(width, height, fps, outputName, outputFormat, fourcc)
     out = cv2.VideoWriter('{}_output.{}'.format(outputName[1:], outputFormat), fourcc,
@@ -31,7 +31,7 @@ def convert(videoName):
     while(True):
         ret, img = vid.read()
         if ret == True:
-            imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            imgGray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
             out.write(imgGray)
             # cv2.imshow('Initial', img)
             # cv2.imshow('Final', imgGray)

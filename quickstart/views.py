@@ -32,11 +32,6 @@ The mail is sent using Python SMTP library.
 Thank You
 '''
 
-message = MIMEMultipart()
-message['From'] = sender_email
-message['Subject'] = 'A test mail sent by Python. It has an attachment.'
-message.attach(MIMEText(mail_content, 'plain'))
-
 
 def home(request):
     documents = Document.objects.all()
@@ -45,13 +40,30 @@ def home(request):
 
 def convertGrayScale(request):
     if request.method == 'POST' and request.FILES['myfile']:
+
+        message = MIMEMultipart()
+        message['From'] = sender_email
+        message['Subject'] = 'A test mail sent by Python. It has an attachment.'
+        message.attach(MIMEText(mail_content, 'plain'))
         myfile = request.FILES['myfile']
+        print(myfile.size)
         email = request.POST.get("email")
         receiver_address = email
+        print(receiver_address)
         message['To'] = receiver_address
         if myfile.content_type.split("/")[0] != "video":
             return render(request, 'core/convertGrayScale.html', {
                 'error_file': "Error : Please Upload a Video",
+                'uploaded_file_url': ""
+            })
+        if myfile.size > 23068672:
+            return render(request, 'core/convertGrayScale.html', {
+                'error_file': "Error : File size Exceeded 25 MB",
+                'uploaded_file_url': ""
+            })
+        if email == None:
+            return render(request, 'core/convertGrayScale.html', {
+                'error_file': "Error : Enter Email Id",
                 'uploaded_file_url': ""
             })
         try:
@@ -61,30 +73,38 @@ def convertGrayScale(request):
             output_file = convert(uploaded_file_url)
             attach_file_name = output_file
             # Open the file as binary mode
-            attach_file = open(attach_file_name, 'rb')
-            payload = MIMEBase('application', 'octate-stream',
-                               name="".join(attach_file_name.split('/')[1:]))
-            payload.set_payload((attach_file).read())
-            encoders.encode_base64(payload)  # encode the attachment
-            # add payload header with filename
-            name = "".join(
-                "".join(attach_file_name.split('/')[1:]).split(".")[0])
-            payload.add_header('Content-Decomposition', 'attachment',
-                               filename="".join(attach_file_name.split('/')[1:]))
-            message.attach(payload)
-            text = message.as_string()
-            print("sending")
-            session.sendmail(sender_email, receiver_address, text)
-            # session.sendmail(message)
-            print("sent")
-            attach_file.close()
+            try:
+
+                attach_file = open(attach_file_name, 'rb')
+                payload = MIMEBase('application', 'octate-stream',
+                                   name="".join(attach_file_name.split('/')[1:]))
+                payload.set_payload((attach_file).read())
+                encoders.encode_base64(payload)  # encode the attachment
+                # add payload header with filename
+                name = "".join(
+                    "".join(attach_file_name.split('/')[1:]).split(".")[0])
+                payload.add_header('Content-Decomposition', 'attachment',
+                                   filename="".join(attach_file_name.split('/')[1:]))
+                message.attach(payload)
+                text = message.as_string()
+                print("sending")
+                session.sendmail(sender_email, receiver_address, text)
+                # session.sendmail(message)
+                print("sent")
+                attach_file.close()
+            except:
+                return render(request, 'core/convertGrayScale.html', {
+                    'error_file': "Error : Email Not Sent",
+                    'uploaded_file_url': output_file
+                })
             return render(request, 'core/convertGrayScale.html', {
+                'error_file': "Email Sent",
                 'uploaded_file_url': output_file
             })
         except:
             return render(request, 'core/convertGrayScale.html', {
-                'error': "Error : Some Error Occured",
-                'uploaded_file_url': "Error"
+                'error_file': "Error : Some Error Occured",
+                'uploaded_file_url': ""
             })
     return render(request, 'core/convertGrayScale.html', {
         'uploaded_file_url': ""
@@ -94,14 +114,25 @@ def convertGrayScale(request):
 def CompressVideo(request):
     print(request.FILES)
     if request.method == 'POST' and request.FILES['myfile']:
+
+        message = MIMEMultipart()
+        message['From'] = sender_email
+        message['Subject'] = 'A test mail sent by Python. It has an attachment.'
+        message.attach(MIMEText(mail_content, 'plain'))
         myfile = request.FILES['myfile']
         email = request.POST.get("email")
         receiver_address = email
+        print(receiver_address)
         message['To'] = receiver_address
         compVal = request.POST.get("compVal")
         if myfile.content_type.split("/")[0] != "video":
             return render(request, 'core/CompressVideo.html', {
                 'error_file': "Error : Please Upload a Video",
+                'uploaded_file_url': ""
+            })
+        if myfile.size > 23068672:
+            return render(request, 'core/convertGrayScale.html', {
+                'error_file': "Error : File size Exceeded 25 MB",
                 'uploaded_file_url': ""
             })
         print(compVal.isnumeric(), int(compVal) >= 0, int(compVal) < 100)
@@ -110,42 +141,55 @@ def CompressVideo(request):
                 'error_file': "Error : Compression value is not a number.",
                 'uploaded_file_url': ""
             })
+        if email == None:
+            return render(request, 'core/convertGrayScale.html', {
+                'error_file': "Error : Enter Email Id",
+                'uploaded_file_url': ""
+            })
         try:
             fs = FileSystemStorage()
             filename = fs.save(myfile.name, myfile)
             uploaded_file_url = fs.url(filename)
             output_file = compress(uploaded_file_url, int(compVal))
             attach_file_name_convert = output_file
-            print(attach_file_name_convert)
-            # Open the file as binary mode
-            attach_file_convert = open(attach_file_name_convert, 'rb')
-            print("1")
-            payload = MIMEBase('application', 'octate-stream',
-                               name="".join(attach_file_name_convert.split('/')[1:]))
-            payload.set_payload((attach_file_convert).read())
-            encoders.encode_base64(payload)  # encode the attachment
-            # add payload header with filename
-            print("2")
-            name = "".join(
-                "".join(attach_file_name_convert.split('/')[1:]).split(".")[0])
-            payload.add_header('Content-Decomposition', 'attachment',
-                               filename="".join(attach_file_name_convert.split('/')[1:]))
-            message.attach(payload)
-            text = message.as_string()
-            print("sending")
-            session.sendmail(sender_email, receiver_address, text)
-            # session.sendmail(message)
-            print("sent")
-            attach_file_convert.close()
+            try:
+
+                print(attach_file_name_convert)
+                # Open the file as binary mode
+                attach_file_convert = open(attach_file_name_convert, 'rb')
+                print("1")
+                payload = MIMEBase('application', 'octate-stream',
+                                   name="".join(attach_file_name_convert.split('/')[1:]))
+                payload.set_payload((attach_file_convert).read())
+                encoders.encode_base64(payload)  # encode the attachment
+                # add payload header with filename
+                print("2")
+                name = "".join(
+                    "".join(attach_file_name_convert.split('/')[1:]).split(".")[0])
+                payload.add_header('Content-Decomposition', 'attachment',
+                                   filename="".join(attach_file_name_convert.split('/')[1:]))
+                message.attach(payload)
+                text = message.as_string()
+                print("sending")
+                session.sendmail(sender_email, receiver_address, text)
+                # session.sendmail(message)
+                print("sent")
+                attach_file_convert.close()
+            except:
+                return render(request, 'core/convertGrayScale.html', {
+                    'error_file': "Error : Email Not Sent",
+                    'uploaded_file_url': output_file
+                })
             return render(request, 'core/CompressVideo.html', {
+                'error_file': "Email Sent",
                 'uploaded_file_url': output_file
             })
         except:
             return render(request, 'core/CompressVideo.html', {
-                'error': "Error : Some Error Occured",
+                'error_file': "Error : Some Error Occured",
                 'uploaded_file_url': ""
             })
     return render(request, 'core/CompressVideo.html', {
-        'error': "",
+        'error_file': "",
         'uploaded_file_url': ""
     })
