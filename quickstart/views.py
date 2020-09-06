@@ -19,7 +19,7 @@ sender_email = "videoconverttest1845@gmail.com"
 password = "alskdjfhg1029384756"
 context = ssl.create_default_context()
 
-session = smtplib.SMTP('smtp.gmail.com', port)  # use gmail with port
+session = smtplib.SMTP('smtp.gmail.com', port) 
 session.ehlo()
 session.starttls()
 session.ehlo()

@@ -27,7 +27,7 @@ def compress(videoName, compVal):
     #         *'{}'.format(fourccList[outputFormat.lower()]))
 
     out = cv2.VideoWriter('{}_compress.{}'.format(outputName[1:], outputFormat), fourcc,
-                          fps,  (round((width*compVal)/100), round((height*compVal)/100)), isColor)
+                          fps, (round((width*compVal)/100), round((height*compVal)/100)), isColor)
 
     while(True):
         ret, img = vid.read()
