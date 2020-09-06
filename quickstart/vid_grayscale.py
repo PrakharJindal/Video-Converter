@@ -17,7 +17,7 @@ def convert(videoName):
     # fourccList = {"mp4": "mp4v", "mpg": "MPGI",  "mkv": "XVID",
     #   "webm": "vp80", "wmv": "XVID", "mov": "3IVD", "avi": "XVID"}
 
-    fourcc = cv2.VideoWriter_fourcc(*'divx')
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     outputFormat = "mp4"
     # if outputFormat.lower() not in fourccList:
     #     print("in")

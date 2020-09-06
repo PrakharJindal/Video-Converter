@@ -15,15 +15,16 @@ def compress(videoName, compVal):
     outputName = ".".join(videoName.split(".")[:-1])
     outputFormat = videoName.split(".")[-1]
 
-    fourccList = {"mp4": "mp4v", "mpg": "MPGI",  "mkv": "mp4v",
-                  "webm": "vp80", "wmv": "WMV1", "mov": "3IVD"}
+    # fourccList = {"mp4": "mp4v", "mpg": "MPGI",  "mkv": "XVID",
+    #   "webm": "vp80", "wmv": "XVID", "mov": "3IVD", "avi": "XVID"}
 
-    if outputFormat.lower() not in fourccList:
-        fourcc = cv2.VideoWriter_fourcc(*'divx')
-        outputFormat = "mp4"
-    else:
-        fourcc = cv2.VideoWriter_fourcc(
-            *'{}'.format(fourccList[outputFormat.lower()]))
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    outputFormat = "mp4"
+    # if outputFormat.lower() not in fourccList:
+    #     print("in")
+    # else:
+    #     fourcc = cv2.VideoWriter_fourcc(
+    #         *'{}'.format(fourccList[outputFormat.lower()]))
 
     out = cv2.VideoWriter('{}_compress.{}'.format(outputName[1:], outputFormat), fourcc,
                           fps,  (round((width*compVal)/100), round((height*compVal)/100)), isColor)
